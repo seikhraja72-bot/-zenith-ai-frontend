@@ -12,7 +12,7 @@
         .user { background: #007bff; align-self: flex-end; margin-left: auto; }
         .bot { background: #333; }
         #input-area { padding: 20px; display: flex; background: #111; }
-        input { flex: 1; padding: 10px; border: none; border-radius: 5px; }
+        input { flex: 1; padding: 10px; border: none; border-radius: 5px; background: #222; color: white; }
         button { padding: 10px 20px; margin-left: 10px; background: #007bff; color: white; border: none; border-radius: 5px; }
     </style>
 </head>
@@ -24,20 +24,19 @@
     </div>
 
     <script>
-        // Yahan apna Render wala link dalein
         const API_URL = "https://zenith-backend-wzse.onrender.com/chat?prompt=";
 
         async function sendMessage() {
             const input = document.getElementById('user-input');
             const box = document.getElementById('chat-box');
-            if(!input.value) return;
-
-            box.innerHTML += `<div class="msg user">${input.value}</div>`;
             const userMsg = input.value;
+            if(!userMsg) return;
+
+            box.innerHTML += `<div class="msg user">${userMsg}</div>`;
             input.value = "";
 
             try {
-                const res = await fetch(API_URL + userMsg);
+                const res = await fetch(API_URL + encodeURIComponent(userMsg));
                 const data = await res.json();
                 box.innerHTML += `<div class="msg bot">${data.reply || data.error}</div>`;
             } catch(e) {
@@ -48,3 +47,4 @@
     </script>
 </body>
 </html>
+
